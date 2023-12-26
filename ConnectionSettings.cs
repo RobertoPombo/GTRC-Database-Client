@@ -5,11 +5,11 @@ using GTRC_Basics;
 
 namespace GTRC_Database_Client
 {
-    public class connectionSettings
+    public class ConnectionSettings
     {
-        public static readonly List<connectionSettings> List = [];
+        public static readonly List<ConnectionSettings> List = [];
 
-        public connectionSettings() { List.Add(this); Name = name; }
+        public ConnectionSettings() { List.Add(this); Name = name; }
 
         private string name = "Preset #1";
         private string ipv4 = "127.0.0.1";
@@ -113,15 +113,15 @@ namespace GTRC_Database_Client
             return true;
         }
 
-        public static connectionSettings? GetActiveConnectionSettings()
+        public static ConnectionSettings? GetActiveConnectionSettings()
         {
-            foreach (connectionSettings conSet in List) { if (conSet.IsActive) { return conSet; } }
+            foreach (ConnectionSettings conSet in List) { if (conSet.IsActive) { return conSet; } }
             return null;
         }
 
         public static void DeactivateAllConnectionSettings()
         {
-            connectionSettings? activeConSet = GetActiveConnectionSettings();
+            ConnectionSettings? activeConSet = GetActiveConnectionSettings();
             if (activeConSet is not null) { activeConSet.IsActive = false; }
         }
     }

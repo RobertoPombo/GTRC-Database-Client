@@ -7,7 +7,7 @@ using GTRC_Basics.Models.DTOs;
 
 namespace GTRC_Database_Client
 {
-    public class HttpRequest<ModelType>(connectionSettings conSet) where ModelType : class, IBaseModel, new()
+    public class HttpRequest<ModelType>(ConnectionSettings conSet) where ModelType : class, IBaseModel, new()
     {
         private static readonly string model = typeof(ModelType).Name;
 
