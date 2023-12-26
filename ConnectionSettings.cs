@@ -5,11 +5,11 @@ using GTRC_Basics;
 
 namespace GTRC_Database_Client
 {
-    public class ConnectionSettings
+    public class connectionSettings
     {
-        public static readonly List<ConnectionSettings> List = [];
+        public static readonly List<connectionSettings> List = [];
 
-        public ConnectionSettings() { List.Add(this); Name = name; }
+        public connectionSettings() { List.Add(this); Name = name; }
 
         private string name = "Preset #1";
         private string ipv4 = "127.0.0.1";
@@ -58,7 +58,7 @@ namespace GTRC_Database_Client
         public bool IsActive
         {
             get { return isActive; }
-            set { if (value != isActive) { if (value) { foreach (ConnectionSettings conSet in List) { if (conSet.IsActive) { conSet.isActive = false; } } } isActive = value; } }
+            set { if (value != isActive) { if (value) { DeactivateAllConnectionSettings(); } isActive = value; } }
         }
 
         [JsonIgnore] public string BaseUrl
@@ -69,7 +69,7 @@ namespace GTRC_Database_Client
                 if (ProtocolType != ProtocolType.None) { baseUrl += ProtocolType.ToString() + "://"; }
                 if (NetworkType == NetworkType.Localhost) { baseUrl += NetworkType.ToString().ToLower(); }
                 else { baseUrl += NetworkType.ToString().ToLower(); }
-                return baseUrl + ":" + Port.ToString() + "/";
+                return baseUrl + ":" + Port.ToString();
             }
         }
 
@@ -111,6 +111,18 @@ namespace GTRC_Database_Client
                 if (List[apiConNr].Name == name && apiConNr != listIndexThis) { return false; }
             }
             return true;
+        }
+
+        public static connectionSettings? GetActiveConnectionSettings()
+        {
+            foreach (connectionSettings conSet in List) { if (conSet.IsActive) { return conSet; } }
+            return null;
+        }
+
+        public static void DeactivateAllConnectionSettings()
+        {
+            connectionSettings? activeConSet = GetActiveConnectionSettings();
+            if (activeConSet is not null) { activeConSet.IsActive = false; }
         }
     }
 }
