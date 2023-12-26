@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Net;
+using System.Net.Http.Json;
 
 using GTRC_Basics;
 
@@ -86,9 +87,9 @@ namespace GTRC_Database_Client
                     _response = requestType switch
                     {
                         HttpRequestType.Get => await httpClient.GetAsync(url + path),
-                        HttpRequestType.Add => await httpClient.PostAsync(url + path, objDto),
+                        HttpRequestType.Add => await httpClient.PostAsync(url + path, JsonContent.Create(objDto)),
                         HttpRequestType.Delete => await httpClient.DeleteAsync(url + path),
-                        HttpRequestType.Update => await httpClient.DeleteAsync(url + path, objDto),
+                        HttpRequestType.Update => await httpClient.PutAsync(url + path, JsonContent.Create(objDto)),
                         _ => null,
                     };
                     if (_response is not null)
