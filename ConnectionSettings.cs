@@ -87,9 +87,9 @@ namespace GTRC_Database_Client
                     _response = requestType switch
                     {
                         HttpRequestType.Get => await httpClient.GetAsync(url + path),
-                        HttpRequestType.Add => await httpClient.PostAsync(url + path, JsonContent.Create(objDto)),
+                        HttpRequestType.Add => await httpClient.PostAsync(url + path, JsonContent.Create(objDto?.Dto)),
                         HttpRequestType.Delete => await httpClient.DeleteAsync(url + path),
-                        HttpRequestType.Update => await httpClient.PutAsync(url + path, JsonContent.Create(objDto)),
+                        HttpRequestType.Update => await httpClient.PutAsync(url + path, JsonContent.Create(objDto?.Dto)),
                         _ => null,
                     };
                     if (_response is not null)

@@ -13,12 +13,15 @@ namespace GTRC_Database_Client
 
         public Tuple<HttpStatusCode, ModelType?> GetObject(Tuple<HttpStatusCode, string> response)
         {
-            return Tuple.Create(response.Item1, JsonConvert.DeserializeObject<ModelType>(response.Item2));
+            ModelType? nullObj = null;
+            if (response.Item1 == HttpStatusCode.InternalServerError) { return Tuple.Create(response.Item1, nullObj); }
+            else { return Tuple.Create(response.Item1, JsonConvert.DeserializeObject<ModelType>(response.Item2)); }
         }
 
         public Tuple<HttpStatusCode, List<ModelType>> GetList(Tuple<HttpStatusCode, string> response)
         {
-            return Tuple.Create(response.Item1, JsonConvert.DeserializeObject<List<ModelType>>(response.Item2) ?? []);
+            if (response.Item1 == HttpStatusCode.InternalServerError) { return Tuple.Create(response.Item1, new List<ModelType>()); }
+            else { return Tuple.Create(response.Item1, JsonConvert.DeserializeObject<List<ModelType>>(response.Item2) ?? []); }
         }
 
         public async Task<Tuple<HttpStatusCode, List<ModelType>>> GetAll()
