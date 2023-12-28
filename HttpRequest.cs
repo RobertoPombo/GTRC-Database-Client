@@ -38,7 +38,7 @@ namespace GTRC_Database_Client
 
         public async Task<Tuple<HttpStatusCode, ModelType?>> GetByUniqProps(UniqPropsDto<ModelType> objDto)
         {
-            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Get, "/ByUniqProps", objDto);
+            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Get, "/ByUniqProps/" + objDto.Index.ToString(), objDto);
             return GetObject(response);
         }
 
