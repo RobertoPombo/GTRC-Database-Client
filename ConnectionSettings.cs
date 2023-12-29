@@ -84,14 +84,20 @@ namespace GTRC_Database_Client
             {
                 try
                 {
-                    _response = requestType switch
+                    switch (requestType)
                     {
-                        HttpRequestType.Get => await httpClient.GetAsync(url + path),
-                        HttpRequestType.Add => await httpClient.PostAsync(url + path, JsonContent.Create(objDto?.Dto)),
-                        HttpRequestType.Delete => await httpClient.DeleteAsync(url + path),
-                        HttpRequestType.Update => await httpClient.PutAsync(url + path, JsonContent.Create(objDto?.Dto)),
-                        _ => null,
-                    };
+                        case HttpRequestType.Get:
+                            if (objDto is null) { _response = await httpClient.GetAsync(url + path); }
+                            else { _response = await httpClient.PutAsync(url + path, JsonContent.Create(objDto.Dto)); }
+                            break;
+                        case HttpRequestType.Delete:
+                            if (objDto is null) { _response = await httpClient.DeleteAsync(url + path); }
+                            else { _response = await httpClient.DeleteAsync(url + path, JsonContent.Create(objDto.Dto)); }
+                            break;
+                        case HttpRequestType.Add: if (objDto is not null) { _response = await httpClient.PostAsync(url + path, JsonContent.Create(objDto.Dto)); } break;
+                        case HttpRequestType.Update: if (objDto is not null) { _response = await httpClient.PutAsync(url + path, JsonContent.Create(objDto.Dto)); } break;
+                        default: _response = null; break;
+                    }
                 }
                 catch (HttpRequestException) { GlobalValues.CurrentLogText = "Connection to GTRC-Database-API failed!"; }
                 if (_response is not null)
