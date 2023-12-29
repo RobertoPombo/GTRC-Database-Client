@@ -1,0 +1,94 @@
+
+// Demo am Beispiel der Update Methode aus dem GTRC-Database-Viewer:
+
+
+
+// Original mit Client.
+public async Task Update_Mit_Client()
+{
+	if (httpRequest is not null && Current is not null && Selected is not null)
+	{
+		//Vorbereitung
+		UpdateDto<ModelType> updateDto = new();
+		DataRow2Object(Selected.Object, Selected);
+		DataRow2Object(Current.Object, Current);
+		updateDto.Dto.ReMap(Selected.Object);
+		updateDto.Dto.ReMap(Current.Object);
+
+		//Request
+		Tuple<HttpStatusCode, ModelType?> response = await httpRequest.Update(updateDto);
+
+		//Verarbeitung
+		if (response.Item1 == HttpStatusCode.OK) { await LoadSql(); }
+		else if (response.Item1 == HttpStatusCode.Conflict && response.Item2 is not null) { Current = new DataRow<ModelType>(response.Item2, false); }
+		else if (response.Item1 == HttpStatusCode.NotFound || response.Item1 == HttpStatusCode.InternalServerError) { await ClearCurrent(); }
+	}
+}
+
+
+
+// Ohne Client mit fast gleicher Funktionalität. Einziger Unterschied ist, dass die URL hardgecoded ist und nicht mehr über eine Json eingelesen werden kann
+public async Task Update_Ohne_Client_V1()
+{
+	if (Current is not null && Selected is not null)
+	{
+		//Vorbereitung
+		UpdateDto<ModelType> updateDto = new();
+		DataRow2Object(Selected.Object, Selected);
+		DataRow2Object(Current.Object, Current);
+		updateDto.Dto.ReMap(Selected.Object);
+		updateDto.Dto.ReMap(Current.Object);
+
+		//Kann man zum statischen Member machen
+		string url = "http://localhost:5000";
+
+		//Request
+		HttpResponseMessage? response = null;
+		HttpStatusCode status = HttpStatusCode.InternalServerError;
+		ModelType? obj = null;
+		url = string.Join("/", [url, typeof(ModelType).Name, "Update"]);
+		using HttpClient httpClient = new();
+		{
+			try { response = await httpClient.PutAsync(url, JsonContent.Create(updateDto.Dto)); }
+			catch { }
+		}
+		if (response is not null)
+		{
+			status = response.StatusCode;
+			obj = JsonConvert.DeserializeObject<ModelType>(await response.Content.ReadAsStringAsync());
+		}
+
+		//Verarbeitung
+		if (status == HttpStatusCode.OK) { await LoadSql(); }
+		else if (status == HttpStatusCode.Conflict && obj is not null) { Current = new DataRow<ModelType>(obj, false); }
+		else if (status == HttpStatusCode.NotFound) { await ClearCurrent(); }
+		else if (status == HttpStatusCode.InternalServerError) { GlobalValues.CurrentLogText = "Connection to GTRC-Database-API failed!"; }
+	}
+}
+
+
+// Alternativer Request in 4 Zeilen (Stirbt falls Api nicht läuft, url falsch ist oder response == null)
+public async Task Update_Ohne_Client_V2()
+{
+	if (Current is not null && Selected is not null)
+	{
+		//Vorbereitung
+		UpdateDto<ModelType> updateDto = new();
+		DataRow2Object(Selected.Object, Selected);
+		DataRow2Object(Current.Object, Current);
+		updateDto.Dto.ReMap(Selected.Object);
+		updateDto.Dto.ReMap(Current.Object);
+
+		//Request
+		HttpClient httpClient = new();
+		HttpResponseMessage? response = await httpClient.PutAsync(string.Join("/", ["http://localhost:5000", typeof(ModelType).Name, "Update"]), JsonContent.Create(updateDto.Dto));
+		HttpStatusCode status = response.StatusCode;
+		ModelType? obj = JsonConvert.DeserializeObject<ModelType>(await response.Content.ReadAsStringAsync());
+
+		//Verarbeitung
+		if (status == HttpStatusCode.OK) { await LoadSql(); }
+		else if (status == HttpStatusCode.Conflict && obj is not null) { Current = new DataRow<ModelType>(obj, false); }
+		else if (status == HttpStatusCode.NotFound) { await ClearCurrent(); }
+		else if (status == HttpStatusCode.InternalServerError) { GlobalValues.CurrentLogText = "Connection to GTRC-Database-API failed!"; }
+	}
+}
