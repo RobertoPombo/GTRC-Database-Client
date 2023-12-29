@@ -76,7 +76,7 @@ namespace GTRC_Database_Client
 
         public async Task<Tuple<HttpStatusCode, string>> SendHttpRequest(string modelTypename, HttpRequestType requestType, string? path = null, dynamic? objDto = null)
         {
-            HttpResponseMessage? _response;
+            HttpResponseMessage? _response = null;
             path ??= string.Empty;
             string url = string.Join("/", [BaseUrl, modelTypename, requestType.ToString()]);
             Tuple<HttpStatusCode, string> response = Tuple.Create(HttpStatusCode.InternalServerError, string.Empty);
@@ -92,14 +92,14 @@ namespace GTRC_Database_Client
                         HttpRequestType.Update => await httpClient.PutAsync(url + path, JsonContent.Create(objDto?.Dto)),
                         _ => null,
                     };
-                    if (_response is not null)
-                    {
-                        HttpStatusCode status = _response.StatusCode;
-                        string message = await _response.Content.ReadAsStringAsync();
-                        response = Tuple.Create(status, message);
-                    }
                 }
-                catch { }
+                catch (HttpRequestException) { GlobalValues.CurrentLogText = "Connection to GTRC-Database-API failed!"; }
+                if (_response is not null)
+                {
+                    HttpStatusCode status = _response.StatusCode;
+                    string message = await _response.Content.ReadAsStringAsync();
+                    response = Tuple.Create(status, message);
+                }
             }
             return response;
         }
