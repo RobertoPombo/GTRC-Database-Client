@@ -69,7 +69,8 @@ namespace GTRC_Database_Client
                 string baseUrl = string.Empty;
                 if (ProtocolType != ProtocolType.None) { baseUrl += ProtocolType.ToString() + "://"; }
                 if (NetworkType == NetworkType.Localhost) { baseUrl += NetworkType.ToString().ToLower(); }
-                else { baseUrl += NetworkType.ToString().ToLower(); }
+                else if (IpAdressType == IpAdressType.IPv4) { baseUrl += Ipv4.ToString(); }
+                else if (IpAdressType == IpAdressType.IPv6) { baseUrl += "[" + Ipv6.ToString() + "]"; }
                 return baseUrl + ":" + Port.ToString();
             }
         }

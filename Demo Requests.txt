@@ -67,7 +67,7 @@ public async Task Update_Ohne_Client_V1()
 }
 
 
-// Alternativer Request in 4 Zeilen (Stirbt falls Api nicht läuft, url falsch ist oder response == null)
+// Alternativer Request in 3 Zeilen (Stirbt falls Api nicht läuft, url falsch ist oder response == null)
 public async Task Update_Ohne_Client_V2()
 {
 	if (Current is not null && Selected is not null)
@@ -82,13 +82,12 @@ public async Task Update_Ohne_Client_V2()
 		//Request
 		HttpClient httpClient = new();
 		HttpResponseMessage? response = await httpClient.PutAsync(string.Join("/", ["http://localhost:5000", typeof(ModelType).Name, "Update"]), JsonContent.Create(updateDto.Dto));
-		HttpStatusCode status = response.StatusCode;
 		ModelType? obj = JsonConvert.DeserializeObject<ModelType>(await response.Content.ReadAsStringAsync());
 
 		//Verarbeitung
-		if (status == HttpStatusCode.OK) { await LoadSql(); }
-		else if (status == HttpStatusCode.Conflict && obj is not null) { Current = new DataRow<ModelType>(obj, false); }
-		else if (status == HttpStatusCode.NotFound) { await ClearCurrent(); }
-		else if (status == HttpStatusCode.InternalServerError) { GlobalValues.CurrentLogText = "Connection to GTRC-Database-API failed!"; }
+		if (response.StatusCode == HttpStatusCode.OK) { await LoadSql(); }
+		else if (response.StatusCode == HttpStatusCode.Conflict && obj is not null) { Current = new DataRow<ModelType>(obj, false); }
+		else if (response.StatusCode == HttpStatusCode.NotFound) { await ClearCurrent(); }
+		else if (response.StatusCode == HttpStatusCode.InternalServerError) { GlobalValues.CurrentLogText = "Connection to GTRC-Database-API failed!"; }
 	}
 }
