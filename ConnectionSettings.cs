@@ -89,14 +89,14 @@ namespace GTRC_Database_Client
                     {
                         case HttpRequestType.Get:
                             if (objDto is null) { _response = await httpClient.GetAsync(url + path); }
-                            else { _response = await httpClient.PutAsync(url + path, JsonContent.Create(objDto.Dto)); }
+                            else { _response = await httpClient.PutAsync(url + path, JsonContent.Create(objDto)); }
                             break;
                         case HttpRequestType.Delete:
                             if (objDto is null) { _response = await httpClient.DeleteAsync(url + path); }
-                            else { _response = await httpClient.DeleteAsync(url + path, JsonContent.Create(objDto.Dto)); }
+                            else { _response = await httpClient.DeleteAsync(url + path, JsonContent.Create(objDto)); }
                             break;
-                        case HttpRequestType.Add: if (objDto is not null) { _response = await httpClient.PostAsync(url + path, JsonContent.Create(objDto.Dto)); } break;
-                        case HttpRequestType.Update: if (objDto is not null) { _response = await httpClient.PutAsync(url + path, JsonContent.Create(objDto.Dto)); } break;
+                        case HttpRequestType.Add: if (objDto is not null) { _response = await httpClient.PostAsync(url + path, JsonContent.Create(objDto)); } break;
+                        case HttpRequestType.Update: if (objDto is not null) { _response = await httpClient.PutAsync(url + path, JsonContent.Create(objDto)); } break;
                         default: _response = null; break;
                     }
                 }

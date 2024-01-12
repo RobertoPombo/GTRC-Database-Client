@@ -7,9 +7,12 @@ using GTRC_Basics.Models.DTOs;
 
 namespace GTRC_Database_Client
 {
-    public class HttpRequest<ModelType>(ConnectionSettings conSet) where ModelType : class, IBaseModel, new()
+    public class HttpRequest<ModelType> where ModelType : class, IBaseModel, new()
     {
         private static readonly string model = typeof(ModelType).Name;
+        private readonly ConnectionSettings conSet;
+
+        public HttpRequest(ConnectionSettings _conSet) { conSet = _conSet; }
 
         public Tuple<HttpStatusCode, ModelType?> GetObject(Tuple<HttpStatusCode, string> response)
         {
@@ -38,19 +41,19 @@ namespace GTRC_Database_Client
 
         public async Task<Tuple<HttpStatusCode, ModelType?>> GetByUniqProps(UniqPropsDto<ModelType> objDto)
         {
-            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Get, "/ByUniqProps/" + objDto.Index.ToString(), objDto);
+            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Get, "/ByUniqProps/" + objDto.Index.ToString(), objDto.Dto);
             return GetObject(response);
         }
 
         public async Task<Tuple<HttpStatusCode, List<ModelType>>> GetByProps(AddDto<ModelType> objDto)
         {
-            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Get, "/ByProps", objDto);
+            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Get, "/ByProps", objDto.Dto);
             return GetList(response);
         }
 
         public async Task<Tuple<HttpStatusCode, List<ModelType>>> GetByFilter(FilterDtos<ModelType> objDto)
         {
-            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Get, "/ByFilter", objDto);
+            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Get, "/ByFilter", objDto.Dto);
             return GetList(response);
         }
 
@@ -62,7 +65,7 @@ namespace GTRC_Database_Client
         
         public async Task<Tuple<HttpStatusCode, ModelType?>> Add(AddDto<ModelType> objDto)
         {
-            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Add, objDto: objDto);
+            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Add, objDto: objDto.Dto);
             return GetObject(response);
         }
 
@@ -74,7 +77,7 @@ namespace GTRC_Database_Client
 
         public async Task<Tuple<HttpStatusCode, ModelType?>> Update(UpdateDto<ModelType> objDto)
         {
-            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Update, objDto: objDto);
+            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Update, objDto: objDto.Dto);
             return GetObject(response);
         }
     }
