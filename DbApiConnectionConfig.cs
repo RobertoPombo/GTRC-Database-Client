@@ -6,15 +6,13 @@ using GTRC_Basics;
 
 namespace GTRC_Database_Client
 {
-    public class ConnectionSettings
+    public class DbApiConnectionConfig : ConnectionConfig
     {
-        public static readonly List<ConnectionSettings> List = [];
+        public static readonly List<DbApiConnectionConfig> List = [];
 
-        public ConnectionSettings() { List.Add(this); Name = name; }
+        public DbApiConnectionConfig() { List.Add(this); Name = name; }
 
         private string name = "Preset #1";
-        private string ipv4 = "127.0.0.1";
-        private string ipv6 = "0:0:0:0:0:0:0:1";
         private bool isActive = false;
 
         public string Name
@@ -36,30 +34,32 @@ namespace GTRC_Database_Client
             }
         }
 
-        public ProtocolType ProtocolType { get; set; } = ProtocolType.http;
-
-        public NetworkType NetworkType { get; set; } = NetworkType.Localhost;
-
-        public IpAdressType IpAdressType { get; set; } = IpAdressType.IPv4;
-
-        public string Ipv4
-        {
-            get { return ipv4; }
-            set { if (value.Split(".").Length == 4 && long.TryParse(value.Replace(".",""), out _)) { ipv4 = value; } }
-        }
-
-        public string Ipv6
-        {
-            get { return ipv6; }
-            set { if (value.Split(":").Length == 8 && value.Split(":").All(i => i.Length < 5)) { ipv6 = value.ToLower(); } }
-        }
-
-        public ushort Port { get; set; } = 5000;
-
         public bool IsActive
         {
             get { return isActive; }
-            set { if (value != isActive) { if (value) { DeactivateAllConnectionSettings(); } isActive = value; } }
+            set { if (value != isActive) { if (value) { DeactivateAllConnections(); } isActive = value; } }
+        }
+
+        public bool IsUniqueName()
+        {
+            int listIndexThis = List.IndexOf(this);
+            for (int conNr = 0; conNr < List.Count; conNr++)
+            {
+                if (List[conNr].Name == name && conNr != listIndexThis) { return false; }
+            }
+            return true;
+        }
+
+        public static DbApiConnectionConfig? GetActiveConnection()
+        {
+            foreach (DbApiConnectionConfig con in List) { if (con.IsActive) { return con; } }
+            return null;
+        }
+
+        public static void DeactivateAllConnections()
+        {
+            DbApiConnectionConfig? con = GetActiveConnection();
+            if (con is not null) { con.IsActive = false; }
         }
 
         [JsonIgnore] public string BaseUrl
@@ -109,28 +109,6 @@ namespace GTRC_Database_Client
                 }
             }
             return response;
-        }
-
-        public bool IsUniqueName()
-        {
-            int listIndexThis = List.IndexOf(this);
-            for (int apiConNr = 0; apiConNr < List.Count; apiConNr++)
-            {
-                if (List[apiConNr].Name == name && apiConNr != listIndexThis) { return false; }
-            }
-            return true;
-        }
-
-        public static ConnectionSettings? GetActiveConnectionSettings()
-        {
-            foreach (ConnectionSettings conSet in List) { if (conSet.IsActive) { return conSet; } }
-            return null;
-        }
-
-        public static void DeactivateAllConnectionSettings()
-        {
-            ConnectionSettings? activeConSet = GetActiveConnectionSettings();
-            if (activeConSet is not null) { activeConSet.IsActive = false; }
         }
     }
 }

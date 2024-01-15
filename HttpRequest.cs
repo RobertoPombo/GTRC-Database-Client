@@ -10,9 +10,9 @@ namespace GTRC_Database_Client
     public class HttpRequest<ModelType> where ModelType : class, IBaseModel, new()
     {
         private static readonly string model = typeof(ModelType).Name;
-        private readonly ConnectionSettings conSet;
+        private readonly DbApiConnectionConfig connection;
 
-        public HttpRequest(ConnectionSettings _conSet) { conSet = _conSet; }
+        public HttpRequest(DbApiConnectionConfig con) { connection = con; }
 
         public Tuple<HttpStatusCode, ModelType?> GetObject(Tuple<HttpStatusCode, string> response)
         {
@@ -29,55 +29,55 @@ namespace GTRC_Database_Client
 
         public async Task<Tuple<HttpStatusCode, List<ModelType>>> GetAll()
         {
-            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Get);
+            Tuple<HttpStatusCode, string> response = await connection.SendHttpRequest(model, HttpRequestType.Get);
             return GetList(response);
         }
 
         public async Task<Tuple<HttpStatusCode, ModelType?>> GetById(int id)
         {
-            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Get, "/" + id.ToString());
+            Tuple<HttpStatusCode, string> response = await connection.SendHttpRequest(model, HttpRequestType.Get, "/" + id.ToString());
             return GetObject(response);
         }
 
         public async Task<Tuple<HttpStatusCode, ModelType?>> GetByUniqProps(UniqPropsDto<ModelType> objDto)
         {
-            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Get, "/ByUniqProps/" + objDto.Index.ToString(), objDto.Dto);
+            Tuple<HttpStatusCode, string> response = await connection.SendHttpRequest(model, HttpRequestType.Get, "/ByUniqProps/" + objDto.Index.ToString(), objDto.Dto);
             return GetObject(response);
         }
 
         public async Task<Tuple<HttpStatusCode, List<ModelType>>> GetByProps(AddDto<ModelType> objDto)
         {
-            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Get, "/ByProps", objDto.Dto);
+            Tuple<HttpStatusCode, string> response = await connection.SendHttpRequest(model, HttpRequestType.Get, "/ByProps", objDto.Dto);
             return GetList(response);
         }
 
         public async Task<Tuple<HttpStatusCode, List<ModelType>>> GetByFilter(FilterDtos<ModelType> objDto)
         {
-            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Get, "/ByFilter", objDto.Dto);
+            Tuple<HttpStatusCode, string> response = await connection.SendHttpRequest(model, HttpRequestType.Get, "/ByFilter", objDto.Dto);
             return GetList(response);
         }
 
         public async Task<Tuple<HttpStatusCode, ModelType?>> GetTemp()
         {
-            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Get, "/Temp");
+            Tuple<HttpStatusCode, string> response = await connection.SendHttpRequest(model, HttpRequestType.Get, "/Temp");
             return GetObject(response);
         }
         
         public async Task<Tuple<HttpStatusCode, ModelType?>> Add(AddDto<ModelType> objDto)
         {
-            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Add, objDto: objDto.Dto);
+            Tuple<HttpStatusCode, string> response = await connection.SendHttpRequest(model, HttpRequestType.Add, objDto: objDto.Dto);
             return GetObject(response);
         }
 
         public async Task<HttpStatusCode> Delete(int id, bool force = false)
         {
-            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Delete, "/" + id.ToString() + "/" + force.ToString());
+            Tuple<HttpStatusCode, string> response = await connection.SendHttpRequest(model, HttpRequestType.Delete, "/" + id.ToString() + "/" + force.ToString());
             return response.Item1;
         }
 
         public async Task<Tuple<HttpStatusCode, ModelType?>> Update(UpdateDto<ModelType> objDto)
         {
-            Tuple<HttpStatusCode, string> response = await conSet.SendHttpRequest(model, HttpRequestType.Update, objDto: objDto.Dto);
+            Tuple<HttpStatusCode, string> response = await connection.SendHttpRequest(model, HttpRequestType.Update, objDto: objDto.Dto);
             return GetObject(response);
         }
     }
