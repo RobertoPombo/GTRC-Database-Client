@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
-using System.Net;
 using System.Net.Http.Json;
 
 using GTRC_Basics;
+using GTRC_Basics.Models;
 
 namespace GTRC_Database_Client
 {
@@ -10,7 +10,12 @@ namespace GTRC_Database_Client
     {
         public static readonly List<DbApiConnectionConfig> List = [];
 
-        public DbApiConnectionConfig() { List.Add(this); Name = name; }
+        public DbApiConnectionConfig()
+        {
+            List.Add(this);
+            Name = name;
+            UpdateDbApiRequests();
+        }
 
         private string name = "Preset #1";
         private bool isActive = false;
@@ -52,7 +57,7 @@ namespace GTRC_Database_Client
 
         public static DbApiConnectionConfig? GetActiveConnection()
         {
-            foreach (DbApiConnectionConfig con in List) { if (con.IsActive) { return con; } }
+            foreach (DbApiConnectionConfig con in List) { if (con.IsActive) { con.UpdateDbApiRequests(); return con; } }
             return null;
         }
 
@@ -75,12 +80,11 @@ namespace GTRC_Database_Client
             }
         }
 
-        public async Task<Tuple<HttpStatusCode, string>> SendHttpRequest(string modelTypename, HttpRequestType requestType, string? path = null, dynamic? objDto = null)
+        public async Task<HttpResponseMessage?> SendRequest(string modelTypename, HttpRequestType requestType, string? path = null, dynamic? objDto = null)
         {
-            HttpResponseMessage? _response = null;
+            HttpResponseMessage? response = null;
             path ??= string.Empty;
             string url = string.Join("/", [BaseUrl, modelTypename, requestType.ToString()]);
-            Tuple<HttpStatusCode, string> response = Tuple.Create(HttpStatusCode.InternalServerError, string.Empty);
             using HttpClient httpClient = new();
             {
                 try
@@ -88,27 +92,66 @@ namespace GTRC_Database_Client
                     switch (requestType)
                     {
                         case HttpRequestType.Get:
-                            if (objDto is null) { _response = await httpClient.GetAsync(url + path); }
-                            else { _response = await httpClient.PutAsync(url + path, JsonContent.Create(objDto)); }
+                            if (objDto is null) { response = await httpClient.GetAsync(url + path); }
+                            else { response = await httpClient.PutAsync(url + path, JsonContent.Create(objDto)); }
                             break;
                         case HttpRequestType.Delete:
-                            if (objDto is null) { _response = await httpClient.DeleteAsync(url + path); }
-                            else { _response = await httpClient.DeleteAsync(url + path, JsonContent.Create(objDto)); }
+                            if (objDto is null) { response = await httpClient.DeleteAsync(url + path); }
+                            else { response = await httpClient.DeleteAsync(url + path, JsonContent.Create(objDto)); }
                             break;
-                        case HttpRequestType.Add: if (objDto is not null) { _response = await httpClient.PostAsync(url + path, JsonContent.Create(objDto)); } break;
-                        case HttpRequestType.Update: if (objDto is not null) { _response = await httpClient.PutAsync(url + path, JsonContent.Create(objDto)); } break;
-                        default: _response = null; break;
+                        case HttpRequestType.Add: if (objDto is not null) { response = await httpClient.PostAsync(url + path, JsonContent.Create(objDto)); } break;
+                        case HttpRequestType.Update: if (objDto is not null) { response = await httpClient.PutAsync(url + path, JsonContent.Create(objDto)); } break;
+                        default: response = null; break;
                     }
                 }
                 catch (HttpRequestException) { GlobalValues.CurrentLogText = "Connection to GTRC-Database-API failed!"; }
-                if (_response is not null)
-                {
-                    HttpStatusCode status = _response.StatusCode;
-                    string message = await _response.Content.ReadAsStringAsync();
-                    response = Tuple.Create(status, message);
-                }
             }
             return response;
         }
+
+        public void UpdateDbApiRequests()
+        {
+            Color = new(this);
+            Sim = new(this);
+            User = new(this);
+            Track = new(this);
+            Carclass = new(this);
+            Manufacturer = new(this);
+            Car = new(this);
+            Role = new(this);
+            UserRole = new(this);
+            Bop = new(this);
+            BopTrackCar = new(this);
+            Series = new(this);
+            Season = new(this);
+            SeasonCarclass = new(this);
+            Organization = new(this);
+            OrganizationUser = new(this);
+            Team = new(this);
+            Event = new(this);
+            EventCarclass = new(this);
+            EventCar = new(this);
+        }
+
+        [JsonIgnore] public DbApiRequest<Color> Color { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Sim> Sim { get; set; }
+        [JsonIgnore] public DbApiRequest<User> User { get; set; }
+        [JsonIgnore] public DbApiRequest<Track> Track { get; set; }
+        [JsonIgnore] public DbApiRequest<Carclass> Carclass { get; set; }
+        [JsonIgnore] public DbApiRequest<Manufacturer> Manufacturer { get; set; }
+        [JsonIgnore] public DbApiRequest<Car> Car { get; set; }
+        [JsonIgnore] public DbApiRequest<Role> Role { get; set; }
+        [JsonIgnore] public DbApiRequest<UserRole> UserRole { get; set; }
+        [JsonIgnore] public DbApiRequest<Bop> Bop { get; set; }
+        [JsonIgnore] public DbApiRequest<BopTrackCar> BopTrackCar { get; set; }
+        [JsonIgnore] public DbApiRequest<Series> Series { get; set; }
+        [JsonIgnore] public DbApiRequest<Season> Season { get; set; }
+        [JsonIgnore] public DbApiRequest<SeasonCarclass> SeasonCarclass { get; set; }
+        [JsonIgnore] public DbApiRequest<Organization> Organization { get; set; }
+        [JsonIgnore] public DbApiRequest<OrganizationUser> OrganizationUser { get; set; }
+        [JsonIgnore] public DbApiRequest<Team> Team { get; set; }
+        [JsonIgnore] public DbApiRequest<Event> Event { get; set; }
+        [JsonIgnore] public DbApiRequest<EventCarclass> EventCarclass { get; set; }
+        [JsonIgnore] public DbApiRequest<EventCar> EventCar { get; set; }
     }
 }
