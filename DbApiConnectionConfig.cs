@@ -10,12 +10,7 @@ namespace GTRC_Database_Client
     {
         public static readonly List<DbApiConnectionConfig> List = [];
 
-        public DbApiConnectionConfig()
-        {
-            List.Add(this);
-            Name = name;
-            UpdateDbApiRequests();
-        }
+        public DbApiConnectionConfig() { List.Add(this); Name = name; UpdateDbApiRequests(); }
 
         private string name = "Preset #1";
         private bool isActive = false;
@@ -134,24 +129,24 @@ namespace GTRC_Database_Client
         }
 
         [JsonIgnore] public DbApiRequest<Color> Color { get; set; } = new();
-        [JsonIgnore] public DbApiRequest<Sim> Sim { get; set; }
-        [JsonIgnore] public DbApiRequest<User> User { get; set; }
-        [JsonIgnore] public DbApiRequest<Track> Track { get; set; }
-        [JsonIgnore] public DbApiRequest<Carclass> Carclass { get; set; }
-        [JsonIgnore] public DbApiRequest<Manufacturer> Manufacturer { get; set; }
-        [JsonIgnore] public DbApiRequest<Car> Car { get; set; }
-        [JsonIgnore] public DbApiRequest<Role> Role { get; set; }
-        [JsonIgnore] public DbApiRequest<UserRole> UserRole { get; set; }
-        [JsonIgnore] public DbApiRequest<Bop> Bop { get; set; }
-        [JsonIgnore] public DbApiRequest<BopTrackCar> BopTrackCar { get; set; }
-        [JsonIgnore] public DbApiRequest<Series> Series { get; set; }
-        [JsonIgnore] public DbApiRequest<Season> Season { get; set; }
-        [JsonIgnore] public DbApiRequest<SeasonCarclass> SeasonCarclass { get; set; }
-        [JsonIgnore] public DbApiRequest<Organization> Organization { get; set; }
-        [JsonIgnore] public DbApiRequest<OrganizationUser> OrganizationUser { get; set; }
-        [JsonIgnore] public DbApiRequest<Team> Team { get; set; }
-        [JsonIgnore] public DbApiRequest<Event> Event { get; set; }
-        [JsonIgnore] public DbApiRequest<EventCarclass> EventCarclass { get; set; }
-        [JsonIgnore] public DbApiRequest<EventCar> EventCar { get; set; }
+        [JsonIgnore] public DbApiRequest<Sim> Sim { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<User> User { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Track> Track { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Carclass> Carclass { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Manufacturer> Manufacturer { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Car> Car { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Role> Role { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<UserRole> UserRole { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Bop> Bop { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<BopTrackCar> BopTrackCar { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Series> Series { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Season> Season { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<SeasonCarclass> SeasonCarclass { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Organization> Organization { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<OrganizationUser> OrganizationUser { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Team> Team { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Event> Event { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<EventCarclass> EventCarclass { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<EventCar> EventCar { get; set; } = new();
     }
 }
