@@ -157,6 +157,7 @@ namespace GTRC_Database_Client
         [JsonIgnore] public DbApiRequest<Organization> Organization { get; set; } = new();
         [JsonIgnore] public DbApiRequest<OrganizationUser> OrganizationUser { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Team> Team { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Entry> Entry { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Event> Event { get; set; } = new();
         [JsonIgnore] public DbApiRequest<EventCarclass> EventCarclass { get; set; } = new();
         [JsonIgnore] public DbApiRequest<EventCar> EventCar { get; set; } = new();
@@ -180,6 +181,7 @@ namespace GTRC_Database_Client
             Organization = new(this);
             OrganizationUser = new(this);
             Team = new(this);
+            Entry = new(this);
             Event = new(this);
             EventCarclass = new(this);
             EventCar = new(this);
