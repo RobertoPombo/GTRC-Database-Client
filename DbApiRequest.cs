@@ -13,7 +13,7 @@ namespace GTRC_Database_Client
 
         public HttpResponseMessage? Response;
 
-        public async Task<DbApiResponse<ModelType>> ReturnAsObject(HttpResponseMessage? response)
+        public static async Task<DbApiResponse<ModelType>> ReturnAsObject(HttpResponseMessage? response)
         {
             DbApiResponse<ModelType> obj = new();
             if (response is not null)
@@ -24,7 +24,7 @@ namespace GTRC_Database_Client
             return obj;
         }
 
-        public async Task<DbApiResponse<ModelType>> ReturnAsList(HttpResponseMessage? response)
+        public static async Task<DbApiResponse<ModelType>> ReturnAsList(HttpResponseMessage? response)
         {
             DbApiResponse<ModelType> obj = new();
             if (response is not null)
@@ -87,6 +87,20 @@ namespace GTRC_Database_Client
         {
             if (connection is not null) { Response = await connection.SendRequest(model, HttpRequestType.Update, objDto: objDto.Dto); }
             return await ReturnAsObject(Response);
+        }
+
+        public async Task<bool> HasChildObjects(int id)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(model, HttpRequestType.Get, "/HasChildObjects/" + id.ToString()); }
+            bool content = false;
+            if (Response is not null) { _ = bool.TryParse(await Response.Content.ReadAsStringAsync() ?? false.ToString(), out content); }
+            return content;
+        }
+
+        public async Task<DbApiResponse<ModelType>> GetChildObjects(Type parentModelType, int parentId)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(parentModelType.Name, HttpRequestType.Get, "/" + model + "/" + parentId.ToString()); }
+            return await ReturnAsList(Response);
         }
     }
 }
