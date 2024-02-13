@@ -149,6 +149,7 @@ namespace GTRC_Database_Client
         [JsonIgnore] public DbApiRequest<Car> Car { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Role> Role { get; set; } = new();
         [JsonIgnore] public DbApiRequest<UserRole> UserRole { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<UserDatetime> UserDatetime { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Bop> Bop { get; set; } = new();
         [JsonIgnore] public DbApiRequest<BopTrackCar> BopTrackCar { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Series> Series { get; set; } = new();
@@ -158,9 +159,14 @@ namespace GTRC_Database_Client
         [JsonIgnore] public DbApiRequest<OrganizationUser> OrganizationUser { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Team> Team { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Entry> Entry { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<EntryDatetime> EntryDatetime { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Event> Event { get; set; } = new();
         [JsonIgnore] public DbApiRequest<EventCarclass> EventCarclass { get; set; } = new();
         [JsonIgnore] public DbApiRequest<EventCar> EventCar { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<EntryEvent> EntryEvent { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<EntryUserEvent> EntryUserEvent { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Pointssystem> Pointssystem { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<PointssystemPosition> PointssystemPosition { get; set; } = new();
 
         public void UpdateDbApiRequests()
         {
@@ -173,6 +179,7 @@ namespace GTRC_Database_Client
             Car = new(this);
             Role = new(this);
             UserRole = new(this);
+            UserDatetime = new(this);
             Bop = new(this);
             BopTrackCar = new(this);
             Series = new(this);
@@ -182,9 +189,14 @@ namespace GTRC_Database_Client
             OrganizationUser = new(this);
             Team = new(this);
             Entry = new(this);
+            EntryDatetime = new(this);
             Event = new(this);
             EventCarclass = new(this);
             EventCar = new(this);
+            EntryEvent = new(this);
+            EntryUserEvent = new(this);
+            Pointssystem = new(this);
+            PointssystemPosition = new(this);
         }
     }
 }
