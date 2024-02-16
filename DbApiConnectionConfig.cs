@@ -76,8 +76,12 @@ namespace GTRC_Database_Client
                         case HttpRequestType.Delete:
                             if (objDto is null) { return await httpClient.DeleteAsync(url + path); }
                             else { return await httpClient.DeleteAsync(url + path, JsonContent.Create(objDto)); }
-                        case HttpRequestType.Add: if (objDto is not null) { return await httpClient.PostAsync(url + path, JsonContent.Create(objDto)); } break;
-                        case HttpRequestType.Update: if (objDto is not null) { return await httpClient.PutAsync(url + path, JsonContent.Create(objDto)); } break;
+                        case HttpRequestType.Add:
+                            if (objDto is not null) { return await httpClient.PostAsync(url + path, JsonContent.Create(objDto)); }
+                            else { return await httpClient.GetAsync(url + path); }
+                        case HttpRequestType.Update:
+                            if (objDto is not null) { return await httpClient.PutAsync(url + path, JsonContent.Create(objDto)); }
+                            else { return await httpClient.GetAsync(url + path); }
                         default: return null;
                     }
                 }
