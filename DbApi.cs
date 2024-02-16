@@ -1,6 +1,4 @@
-﻿using GTRC_Database_Client;
-
-namespace GTRC_Web_Backend
+﻿namespace GTRC_Database_Client
 {
     public class DbApi
     {
