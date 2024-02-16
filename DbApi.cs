@@ -4,6 +4,8 @@
     {
         public static readonly DbApiConnectionConfig Connection;
 
+        public static DbApiConnectionConfig DynConnection { get { return DbApiConnectionConfig.GetActiveConnection() ?? DbApiConnectionConfig.List[0]; } }
+
         static DbApi()
         {
             DbApiConnectionConfig.LoadJson();
