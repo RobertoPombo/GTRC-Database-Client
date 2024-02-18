@@ -4,6 +4,7 @@ using System.Text;
 
 using GTRC_Basics;
 using GTRC_Basics.Models;
+using GTRC_Basics.Configs;
 
 namespace GTRC_Database_Client
 {
