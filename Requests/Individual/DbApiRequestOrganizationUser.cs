@@ -6,7 +6,7 @@ namespace GTRC_Database_Client.Requests
 {
     public class DbApiRequestOrganizationUser(DbApiConnectionConfig? connection = null) : DbApiRequest<OrganizationUser>(connection)
     {
-        public async Task<DbApiResponse<OrganizationUser>> GetAdmins(int organizationId)
+        public async Task<DbApiListResponse<OrganizationUser>> GetAdmins(int organizationId)
         {
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/Admins/" + organizationId.ToString()); }
             return await ReturnAsList(Response);

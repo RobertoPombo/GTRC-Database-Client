@@ -12,7 +12,7 @@ namespace GTRC_Database_Client.Requests
             return new DbApiValueResponse<int>(Response);
         }
 
-        public async Task<DbApiResponse<Event>> GetNext(int seasonId, DateTime? date = null)
+        public async Task<DbApiObjectResponse<Event>> GetNext(int seasonId, DateTime? date = null)
         {
             date ??= DateTime.UtcNow;
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/Next/" + seasonId.ToString(), date, nameof(date)); }

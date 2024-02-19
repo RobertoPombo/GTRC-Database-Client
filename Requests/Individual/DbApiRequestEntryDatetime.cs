@@ -7,7 +7,7 @@ namespace GTRC_Database_Client.Requests
 {
     public class DbApiRequestEntryDatetime(DbApiConnectionConfig? connection = null) : DbApiRequest<EntryDatetime>(connection)
     {
-        public async Task<DbApiResponse<EntryDatetime>> GetAnyByUniqProps(EntryDatetimeUniqPropsDto0 objDto)
+        public async Task<DbApiObjectResponse<EntryDatetime>> GetAnyByUniqProps(EntryDatetimeUniqPropsDto0 objDto)
         {
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/ByUniqProps/0/Any", objDto); }
             return await ReturnAsObject(Response);

@@ -14,20 +14,20 @@ namespace GTRC_Database_Client.Requests
 
         public HttpResponseMessage? Response;
 
-        public static async Task<DbApiResponse<ModelType>> ReturnAsObject(HttpResponseMessage? response)
+        public static async Task<DbApiObjectResponse<ModelType>> ReturnAsObject(HttpResponseMessage? response)
         {
-            DbApiResponse<ModelType> obj = new();
+            DbApiObjectResponse<ModelType> obj = new();
             if (response is not null)
             {
                 obj.Status = response.StatusCode;
-                obj.Obj = JsonConvert.DeserializeObject<ModelType>(await response.Content.ReadAsStringAsync()) ?? new();
+                obj.Object = JsonConvert.DeserializeObject<ModelType>(await response.Content.ReadAsStringAsync()) ?? new();
             }
             return obj;
         }
 
-        public static async Task<DbApiResponse<ModelType>> ReturnAsList(HttpResponseMessage? response)
+        public static async Task<DbApiListResponse<ModelType>> ReturnAsList(HttpResponseMessage? response)
         {
-            DbApiResponse<ModelType> obj = new();
+            DbApiListResponse<ModelType> obj = new();
             if (response is not null)
             {
                 obj.Status = response.StatusCode;
@@ -36,43 +36,43 @@ namespace GTRC_Database_Client.Requests
             return obj;
         }
 
-        public async Task<DbApiResponse<ModelType>> GetAll()
+        public async Task<DbApiListResponse<ModelType>> GetAll()
         {
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get); }
             return await ReturnAsList(Response);
         }
 
-        public async Task<DbApiResponse<ModelType>> GetById(int id)
+        public async Task<DbApiObjectResponse<ModelType>> GetById(int id)
         {
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/" + id.ToString()); }
             return await ReturnAsObject(Response);
         }
 
-        public async Task<DbApiResponse<ModelType>> GetByUniqProps(UniqPropsDto<ModelType> objDto)
+        public async Task<DbApiObjectResponse<ModelType>> GetByUniqProps(UniqPropsDto<ModelType> objDto)
         {
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/ByUniqProps/" + objDto.Index.ToString(), objDto.Dto); }
             return await ReturnAsObject(Response);
         }
 
-        public async Task<DbApiResponse<ModelType>> GetByProps(AddDto<ModelType> objDto)
+        public async Task<DbApiListResponse<ModelType>> GetByProps(AddDto<ModelType> objDto)
         {
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/ByProps", objDto.Dto); }
             return await ReturnAsList(Response);
         }
 
-        public async Task<DbApiResponse<ModelType>> GetByFilter(FilterDtos<ModelType> objDto)
+        public async Task<DbApiListResponse<ModelType>> GetByFilter(FilterDtos<ModelType> objDto)
         {
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/ByFilter", objDto.Dto); }
             return await ReturnAsList(Response);
         }
 
-        public async Task<DbApiResponse<ModelType>> GetTemp()
+        public async Task<DbApiObjectResponse<ModelType>> GetTemp()
         {
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/Temp"); }
             return await ReturnAsObject(Response);
         }
 
-        public async Task<DbApiResponse<ModelType>> Add(AddDto<ModelType> objDto)
+        public async Task<DbApiObjectResponse<ModelType>> Add(AddDto<ModelType> objDto)
         {
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Add, objDto: objDto.Dto); }
             return await ReturnAsObject(Response);
@@ -84,7 +84,7 @@ namespace GTRC_Database_Client.Requests
             return Response?.StatusCode ?? HttpStatusCode.InternalServerError;
         }
 
-        public async Task<DbApiResponse<ModelType>> Update(UpdateDto<ModelType> objDto)
+        public async Task<DbApiObjectResponse<ModelType>> Update(UpdateDto<ModelType> objDto)
         {
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Update, objDto: objDto.Dto); }
             return await ReturnAsObject(Response);
@@ -98,7 +98,7 @@ namespace GTRC_Database_Client.Requests
             return content;
         }
 
-        public async Task<DbApiResponse<ModelType>> GetChildObjects(Type parentModelType, int parentId)
+        public async Task<DbApiListResponse<ModelType>> GetChildObjects(Type parentModelType, int parentId)
         {
             if (connection is not null) { Response = await connection.SendRequest(parentModelType.Name, HttpRequestType.Get, "/" + Model + "/" + parentId.ToString()); }
             return await ReturnAsList(Response);
