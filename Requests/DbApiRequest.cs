@@ -4,12 +4,13 @@ using System.Net;
 using GTRC_Basics;
 using GTRC_Basics.Models.Common;
 using GTRC_Basics.Models.DTOs;
+using GTRC_Database_Client.Responses;
 
-namespace GTRC_Database_Client
+namespace GTRC_Database_Client.Requests
 {
     public class DbApiRequest<ModelType>(DbApiConnectionConfig? connection = null) where ModelType : class, IBaseModel, new()
     {
-        private static readonly string model = typeof(ModelType).Name;
+        public static readonly string Model = typeof(ModelType).Name;
 
         public HttpResponseMessage? Response;
 
@@ -37,61 +38,61 @@ namespace GTRC_Database_Client
 
         public async Task<DbApiResponse<ModelType>> GetAll()
         {
-            if (connection is not null) { Response = await connection.SendRequest(model, HttpRequestType.Get); }
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get); }
             return await ReturnAsList(Response);
         }
 
         public async Task<DbApiResponse<ModelType>> GetById(int id)
         {
-            if (connection is not null) { Response = await connection.SendRequest(model, HttpRequestType.Get, "/" + id.ToString()); }
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/" + id.ToString()); }
             return await ReturnAsObject(Response);
         }
 
         public async Task<DbApiResponse<ModelType>> GetByUniqProps(UniqPropsDto<ModelType> objDto)
         {
-            if (connection is not null) { Response = await connection.SendRequest(model, HttpRequestType.Get, "/ByUniqProps/" + objDto.Index.ToString(), objDto.Dto); }
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/ByUniqProps/" + objDto.Index.ToString(), objDto.Dto); }
             return await ReturnAsObject(Response);
         }
 
         public async Task<DbApiResponse<ModelType>> GetByProps(AddDto<ModelType> objDto)
         {
-            if (connection is not null) { Response = await connection.SendRequest(model, HttpRequestType.Get, "/ByProps", objDto.Dto); }
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/ByProps", objDto.Dto); }
             return await ReturnAsList(Response);
         }
 
         public async Task<DbApiResponse<ModelType>> GetByFilter(FilterDtos<ModelType> objDto)
         {
-            if (connection is not null) { Response = await connection.SendRequest(model, HttpRequestType.Get, "/ByFilter", objDto.Dto); }
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/ByFilter", objDto.Dto); }
             return await ReturnAsList(Response);
         }
 
         public async Task<DbApiResponse<ModelType>> GetTemp()
         {
-            if (connection is not null) { Response = await connection.SendRequest(model, HttpRequestType.Get, "/Temp"); }
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/Temp"); }
             return await ReturnAsObject(Response);
         }
-        
+
         public async Task<DbApiResponse<ModelType>> Add(AddDto<ModelType> objDto)
         {
-            if (connection is not null) { Response = await connection.SendRequest(model, HttpRequestType.Add, objDto: objDto.Dto); }
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Add, objDto: objDto.Dto); }
             return await ReturnAsObject(Response);
         }
 
         public async Task<HttpStatusCode> Delete(int id, bool force = false)
         {
-            if (connection is not null) { Response = await connection.SendRequest(model, HttpRequestType.Delete, "/" + id.ToString() + "/" + force.ToString()); }
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Delete, "/" + id.ToString() + "/" + force.ToString()); }
             return Response?.StatusCode ?? HttpStatusCode.InternalServerError;
         }
 
         public async Task<DbApiResponse<ModelType>> Update(UpdateDto<ModelType> objDto)
         {
-            if (connection is not null) { Response = await connection.SendRequest(model, HttpRequestType.Update, objDto: objDto.Dto); }
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Update, objDto: objDto.Dto); }
             return await ReturnAsObject(Response);
         }
 
         public async Task<bool> HasChildObjects(int id)
         {
-            if (connection is not null) { Response = await connection.SendRequest(model, HttpRequestType.Get, "/HasChildObjects/" + id.ToString()); }
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/HasChildObjects/" + id.ToString()); }
             bool content = false;
             if (Response is not null) { _ = bool.TryParse(await Response.Content.ReadAsStringAsync() ?? false.ToString(), out content); }
             return content;
@@ -99,7 +100,7 @@ namespace GTRC_Database_Client
 
         public async Task<DbApiResponse<ModelType>> GetChildObjects(Type parentModelType, int parentId)
         {
-            if (connection is not null) { Response = await connection.SendRequest(parentModelType.Name, HttpRequestType.Get, "/" + model + "/" + parentId.ToString()); }
+            if (connection is not null) { Response = await connection.SendRequest(parentModelType.Name, HttpRequestType.Get, "/" + Model + "/" + parentId.ToString()); }
             return await ReturnAsList(Response);
         }
     }

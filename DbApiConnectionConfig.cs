@@ -5,6 +5,7 @@ using System.Text;
 using GTRC_Basics;
 using GTRC_Basics.Models;
 using GTRC_Basics.Configs;
+using GTRC_Database_Client.Requests;
 
 namespace GTRC_Database_Client
 {
@@ -64,7 +65,7 @@ namespace GTRC_Database_Client
             }
         }
 
-        public async Task<HttpResponseMessage?> SendRequest(string modelTypename, HttpRequestType requestType, string? path = null, dynamic? objDto = null)
+        public async Task<HttpResponseMessage?> SendRequest(string modelTypename, HttpRequestType requestType, string? path = null, dynamic? objDto = null, string? varName = null)
         {
             path ??= string.Empty;
             string url = string.Join("/", [BaseUrl, modelTypename, requestType.ToString()]);
@@ -76,15 +77,19 @@ namespace GTRC_Database_Client
                     {
                         case HttpRequestType.Get:
                             if (objDto is null) { return await httpClient.GetAsync(url + path); }
-                            else { return await httpClient.PutAsync(url + path, JsonContent.Create(objDto)); }
+                            else if (varName is null) { return await httpClient.PutAsync(url + path, JsonContent.Create(objDto)); }
+                            else { return await httpClient.GetAsync(url + path + "?" + varName + "=" + objDto.ToString()); }
                         case HttpRequestType.Delete:
                             if (objDto is null) { return await httpClient.DeleteAsync(url + path); }
-                            else { return await httpClient.DeleteAsync(url + path, JsonContent.Create(objDto)); }
+                            else if (varName is null) { return await httpClient.PutAsync(url + path, JsonContent.Create(objDto)); }
+                            else { return await httpClient.DeleteAsync(url + path + "?" + varName + "=" + objDto.ToString()); }
                         case HttpRequestType.Add:
-                            if (objDto is not null) { return await httpClient.PostAsync(url + path, JsonContent.Create(objDto)); }
+                            if (objDto is not null && varName is null) { return await httpClient.PostAsync(url + path, JsonContent.Create(objDto)); }
+                            else if (objDto is not null) { return await httpClient.GetAsync(url + path + "?" + varName + "=" + objDto.ToString()); }
                             else { return await httpClient.GetAsync(url + path); }
                         case HttpRequestType.Update:
-                            if (objDto is not null) { return await httpClient.PutAsync(url + path, JsonContent.Create(objDto)); }
+                            if (objDto is not null && varName is null) { return await httpClient.PutAsync(url + path, JsonContent.Create(objDto)); }
+                            else if (objDto is not null) { return await httpClient.GetAsync(url + path + "?" + varName + "=" + objDto.ToString()); }
                             else { return await httpClient.GetAsync(url + path); }
                         default: return null;
                     }
@@ -150,7 +155,7 @@ namespace GTRC_Database_Client
 
         [JsonIgnore] public DbApiRequest<Color> Color { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Sim> Sim { get; set; } = new();
-        [JsonIgnore] public DbApiRequest<User> User { get; set; } = new();
+        [JsonIgnore] public DbApiRequestUser User { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Track> Track { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Carclass> Carclass { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Manufacturer> Manufacturer { get; set; } = new();
@@ -161,14 +166,14 @@ namespace GTRC_Database_Client
         [JsonIgnore] public DbApiRequest<Bop> Bop { get; set; } = new();
         [JsonIgnore] public DbApiRequest<BopTrackCar> BopTrackCar { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Series> Series { get; set; } = new();
-        [JsonIgnore] public DbApiRequest<Season> Season { get; set; } = new();
+        [JsonIgnore] public DbApiRequestSeason Season { get; set; } = new();
         [JsonIgnore] public DbApiRequest<SeasonCarclass> SeasonCarclass { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Organization> Organization { get; set; } = new();
-        [JsonIgnore] public DbApiRequest<OrganizationUser> OrganizationUser { get; set; } = new();
+        [JsonIgnore] public DbApiRequestOrganizationUser OrganizationUser { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Team> Team { get; set; } = new();
-        [JsonIgnore] public DbApiRequest<Entry> Entry { get; set; } = new();
-        [JsonIgnore] public DbApiRequest<EntryDatetime> EntryDatetime { get; set; } = new();
-        [JsonIgnore] public DbApiRequest<Event> Event { get; set; } = new();
+        [JsonIgnore] public DbApiRequestEntry Entry { get; set; } = new();
+        [JsonIgnore] public DbApiRequestEntryDatetime EntryDatetime { get; set; } = new();
+        [JsonIgnore] public DbApiRequestEvent Event { get; set; } = new();
         [JsonIgnore] public DbApiRequest<EventCarclass> EventCarclass { get; set; } = new();
         [JsonIgnore] public DbApiRequest<EventCar> EventCar { get; set; } = new();
         [JsonIgnore] public DbApiRequest<EntryEvent> EntryEvent { get; set; } = new();

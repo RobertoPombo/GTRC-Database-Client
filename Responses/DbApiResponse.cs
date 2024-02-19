@@ -2,7 +2,7 @@
 
 using GTRC_Basics.Models.Common;
 
-namespace GTRC_Database_Client
+namespace GTRC_Database_Client.Responses
 {
     public class DbApiResponse<ModelType> where ModelType : class, IBaseModel, new()
     {
