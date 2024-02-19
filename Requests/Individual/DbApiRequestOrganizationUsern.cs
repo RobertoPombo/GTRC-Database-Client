@@ -9,7 +9,7 @@ namespace GTRC_Database_Client.Requests
         public async Task<DbApiResponse<OrganizationUser>> GetAdmins(int organizationId)
         {
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/Admins/" + organizationId.ToString()); }
-            return await ReturnAsObject(Response);
+            return await ReturnAsList(Response);
         }
     }
 }
