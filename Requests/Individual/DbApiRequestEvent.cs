@@ -14,8 +14,8 @@ namespace GTRC_Database_Client.Requests
 
         public async Task<DbApiObjectResponse<Event>> GetNext(int seasonId, DateTime? date = null)
         {
-            date ??= DateTime.UtcNow;
-            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/Next/" + seasonId.ToString(), date, nameof(date)); }
+            string _date = (date ?? DateTime.UtcNow).ToString("MM/dd/yyyy HH:mm:ss");
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/Next/" + seasonId.ToString(), _date, nameof(date)); }
             return await ReturnAsObject(Response);
         }
     }
