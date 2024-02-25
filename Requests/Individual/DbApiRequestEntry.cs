@@ -14,7 +14,7 @@ namespace GTRC_Database_Client.Requests
 
         public async Task<DbApiListResponse<Entry>> UpdateRaceNumbers(int seasonId)
         {
-            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/RaceNumbers/" + seasonId.ToString()); }
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Update, "/RaceNumbers/" + seasonId.ToString()); }
             return await ReturnAsList(Response);
         }
     }

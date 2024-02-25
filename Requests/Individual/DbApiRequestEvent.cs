@@ -18,5 +18,16 @@ namespace GTRC_Database_Client.Requests
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/Next/" + seasonId.ToString(), _date, nameof(date)); }
             return await ReturnAsObject(Response);
         }
+        public async Task<DbApiObjectResponse<Event>> GetFirst(int seasonId)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/First/" + seasonId.ToString()); }
+            return await ReturnAsObject(Response);
+        }
+
+        public async Task<DbApiObjectResponse<Event>> GetFinal(int seasonId)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/Final/" + seasonId.ToString()); }
+            return await ReturnAsObject(Response);
+        }
     }
 }
