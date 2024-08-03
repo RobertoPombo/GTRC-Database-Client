@@ -180,6 +180,13 @@ namespace GTRC_Database_Client
         [JsonIgnore] public DbApiRequestEntryUserEvent EntryUserEvent { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Pointssystem> Pointssystem { get; set; } = new();
         [JsonIgnore] public DbApiRequest<PointssystemPosition> PointssystemPosition { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Server> Server { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Session> Session { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Resultsfile> Resultsfile { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Lap> Lap { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Leaderboardline> Leaderboardline { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Incident> Incident { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<IncidentEntry> IncidentEntry { get; set; } = new();
 
         public void UpdateDbApiRequests()
         {
@@ -210,6 +217,13 @@ namespace GTRC_Database_Client
             EntryUserEvent = new(this);
             Pointssystem = new(this);
             PointssystemPosition = new(this);
+            Server = new(this);
+            Session = new(this);
+            Resultsfile = new(this);
+            Lap = new(this);
+            Leaderboardline = new(this);
+            Incident = new(this);
+            IncidentEntry = new(this);
         }
     }
 }
