@@ -188,6 +188,7 @@ namespace GTRC_Database_Client
         [JsonIgnore] public DbApiRequest<Leaderboardline> Leaderboardline { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Incident> Incident { get; set; } = new();
         [JsonIgnore] public DbApiRequest<IncidentEntry> IncidentEntry { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<SeriesDiscordchanneltype> SeriesDiscordchanneltype { get; set; } = new();
 
         public void UpdateDbApiRequests()
         {
@@ -226,6 +227,7 @@ namespace GTRC_Database_Client
             Leaderboardline = new(this);
             Incident = new(this);
             IncidentEntry = new(this);
+            SeriesDiscordchanneltype = new(this);
         }
     }
 }
