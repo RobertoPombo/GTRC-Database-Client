@@ -159,14 +159,14 @@ namespace GTRC_Database_Client
         [JsonIgnore] public DbApiRequest<Track> Track { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Carclass> Carclass { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Manufacturer> Manufacturer { get; set; } = new();
-        [JsonIgnore] public DbApiRequest<Car> Car { get; set; } = new();
+        [JsonIgnore] public DbApiRequestCar Car { get; set; } = new();
         [JsonIgnore] public DbApiRequestRole Role { get; set; } = new();
         [JsonIgnore] public DbApiRequest<UserRole> UserRole { get; set; } = new();
         [JsonIgnore] public DbApiRequest<UserDatetime> UserDatetime { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Bop> Bop { get; set; } = new();
         [JsonIgnore] public DbApiRequest<BopTrackCar> BopTrackCar { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Series> Series { get; set; } = new();
-        [JsonIgnore] public DbApiRequest<Season> Season { get; set; } = new();
+        [JsonIgnore] public DbApiRequestSeason Season { get; set; } = new();
         [JsonIgnore] public DbApiRequest<SeasonCarclass> SeasonCarclass { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Organization> Organization { get; set; } = new();
         [JsonIgnore] public DbApiRequestOrganizationUser OrganizationUser { get; set; } = new();
