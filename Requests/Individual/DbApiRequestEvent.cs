@@ -12,6 +12,12 @@ namespace GTRC_Database_Client.Requests
             return new DbApiValueResponse<int>(Response);
         }
 
+        public async Task<DbApiObjectResponse<Event>> GetByNr(int seasonId, int nr)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/ByNr/" + seasonId.ToString() + "/" + nr.ToString()); }
+            return await ReturnAsObject(Response);
+        }
+
         public async Task<DbApiObjectResponse<Event>> GetNext(int seasonId, DateTime? date = null)
         {
             string _date = (date ?? DateTime.UtcNow).ToString("MM/dd/yyyy HH:mm:ss");

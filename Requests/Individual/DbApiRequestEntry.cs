@@ -17,5 +17,23 @@ namespace GTRC_Database_Client.Requests
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Update, "/RaceNumbers/" + seasonId.ToString()); }
             return await ReturnAsList(Response);
         }
+
+        public async Task<DbApiListResponse<Entry>> GetByUserSeason(int userId, int seasonId)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/ByUserSeason/" + userId.ToString() + "/" + seasonId.ToString()); }
+            return await ReturnAsList(Response);
+        }
+
+        public async Task<DbApiListResponse<Entry>> GetByUserEvent(int userId, int eventId)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/ByUserEvent/" + userId.ToString() + "/" + eventId.ToString()); }
+            return await ReturnAsList(Response);
+        }
+
+        public async Task<DbApiValueResponse<byte>> GetCarChangeCount(int entryId, int eventId)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/CarChangeCount/" + entryId.ToString() + "/" + eventId.ToString()); }
+            return new DbApiValueResponse<byte>(Response);
+        }
     }
 }
