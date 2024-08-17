@@ -2,14 +2,14 @@
 {
     public class DbApi
     {
-        public static readonly DbApiConnectionConfig Connection;
+        public static readonly DbApiConnectionConfig Con;
 
-        public static DbApiConnectionConfig DynConnection { get { return DbApiConnectionConfig.GetActiveConnection() ?? DbApiConnectionConfig.List[0]; } }
+        public static DbApiConnectionConfig DynCon { get { return DbApiConnectionConfig.GetActiveConnection() ?? DbApiConnectionConfig.List[0]; } }
 
         static DbApi()
         {
             DbApiConnectionConfig.LoadJson();
-            Connection = DbApiConnectionConfig.GetActiveConnection() ?? DbApiConnectionConfig.List[0];
+            Con = DbApiConnectionConfig.GetActiveConnection() ?? DbApiConnectionConfig.List[0];
         }
     }
 }
