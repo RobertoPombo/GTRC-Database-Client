@@ -170,7 +170,7 @@ namespace GTRC_Database_Client
         [JsonIgnore] public DbApiRequest<SeasonCarclass> SeasonCarclass { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Organization> Organization { get; set; } = new();
         [JsonIgnore] public DbApiRequestOrganizationUser OrganizationUser { get; set; } = new();
-        [JsonIgnore] public DbApiRequest<Team> Team { get; set; } = new();
+        [JsonIgnore] public DbApiRequestTeam Team { get; set; } = new();
         [JsonIgnore] public DbApiRequestEntry Entry { get; set; } = new();
         [JsonIgnore] public DbApiRequestEntryDatetime EntryDatetime { get; set; } = new();
         [JsonIgnore] public DbApiRequestEvent Event { get; set; } = new();

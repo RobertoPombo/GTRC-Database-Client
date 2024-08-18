@@ -35,5 +35,35 @@ namespace GTRC_Database_Client.Requests
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/CarChangeCount/" + entryId.ToString() + "/" + eventId.ToString()); }
             return new DbApiValueResponse<byte>(Response);
         }
+
+        public async Task<DbApiListResponse<Entry>> GetViolationsMinDriversPerEntryEvent(int seasonId)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/Violations/MinDriversPerEntryEvent/" + seasonId.ToString()); }
+            return await ReturnAsList(Response);
+        }
+
+        public async Task<DbApiListResponse<Entry>> GetViolationsMaxDriversPerEntryEvent(int seasonId)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/Violations/MaxDriversPerEntryEvent/" + seasonId.ToString()); }
+            return await ReturnAsList(Response);
+        }
+
+        public async Task<DbApiListResponse<Entry>> GetViolationsAllowDriverLineupPerEvent(int seasonId)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/Violations/AllowDriverLineupPerEvent/" + seasonId.ToString()); }
+            return await ReturnAsList(Response);
+        }
+
+        public async Task<DbApiListResponse<Entry>> GetViolationsDateStartRegistration(int seasonId)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/Violations/DateStartRegistration/" + seasonId.ToString()); }
+            return await ReturnAsList(Response);
+        }
+
+        public async Task<DbApiListResponse<Entry>> GetViolationsDateEndRegistration(int seasonId)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/Violations/DateEndRegistration/" + seasonId.ToString()); }
+            return await ReturnAsList(Response);
+        }
     }
 }

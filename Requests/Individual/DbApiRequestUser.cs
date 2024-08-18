@@ -23,5 +23,29 @@ namespace GTRC_Database_Client.Requests
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/ByEntryEvent/" + entryId.ToString() + "/" + eventId.ToString()); }
             return await ReturnAsList(Response);
         }
+
+        public async Task<DbApiListResponse<User>> GetViolationsDiscordId(int seasonId)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/Violations/DiscordId/" + seasonId.ToString()); }
+            return await ReturnAsList(Response);
+        }
+
+        public async Task<DbApiListResponse<User>> GetViolationsAllowEntriesShareDriverSameEvent(int seasonId)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/Violations/AllowEntriesShareDriverSameEvent/" + seasonId.ToString()); }
+            return await ReturnAsList(Response);
+        }
+
+        public async Task<DbApiListResponse<User>> GetViolationsAllowEntriesShareDriver(int seasonId)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/Violations/AllowEntriesShareDriver/" + seasonId.ToString()); }
+            return await ReturnAsList(Response);
+        }
+
+        public async Task<DbApiListResponse<User>> GetViolationsForceDriverFromOrganization(int seasonId)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/Violations/ForceDriverFromOrganization/" + seasonId.ToString()); }
+            return await ReturnAsList(Response);
+        }
     }
 }
