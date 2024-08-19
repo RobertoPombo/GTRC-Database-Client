@@ -12,7 +12,7 @@ namespace GTRC_Database_Client
     public class DbApiConnectionConfig : ConnectionConfig
     {
         public static readonly List<DbApiConnectionConfig> List = [];
-        private static readonly string path = GlobalValues.DataDirectory + "config dbapi.json";
+        private static readonly string path = GlobalValues.ConfigDirectory + "config dbapi.json";
 
         public DbApiConnectionConfig()
         {
@@ -122,7 +122,6 @@ namespace GTRC_Database_Client
 
         public static void LoadJson()
         {
-            if (!Directory.Exists(GlobalValues.DataDirectory)) { Directory.CreateDirectory(GlobalValues.DataDirectory); }
             if (!File.Exists(path)) { File.WriteAllText(path, JsonConvert.SerializeObject(List, Formatting.Indented), Encoding.Unicode); }
             try
             {
