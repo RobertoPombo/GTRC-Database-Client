@@ -5,9 +5,9 @@ using GTRC_Basics.Models.DTOs;
 
 namespace GTRC_Database_Client.Requests
 {
-    public class DbApiRequestEntryUserEvent(DbApiConnectionConfig? connection = null) : DbApiRequest<EntryUserEvent>(connection)
+    public class DbApiRequestUserDatetime(DbApiConnectionConfig? connection = null) : DbApiRequest<UserDatetime>(connection)
     {
-        public async Task<DbApiObjectResponse<EntryUserEvent>> GetAnyByUniqProps(EntryUserEventUniqPropsDto0 objDto)
+        public async Task<DbApiObjectResponse<UserDatetime>> GetAnyByUniqProps(UserDatetimeUniqPropsDto0 objDto)
         {
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/ByUniqProps/0/Any", objDto); }
             return await ReturnAsObject(Response);

@@ -36,5 +36,11 @@ namespace GTRC_Database_Client.Requests
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/Final/" + seasonId.ToString()); }
             return await ReturnAsObject(Response);
         }
+
+        public async Task<DbApiValueResponse<bool>> GetIsOver(int id)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/IsOver/" + id.ToString()); }
+            return new DbApiValueResponse<bool>(Response);
+        }
     }
 }

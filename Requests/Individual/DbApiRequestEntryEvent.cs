@@ -12,5 +12,17 @@ namespace GTRC_Database_Client.Requests
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/ByUniqProps/0/Any", objDto); }
             return await ReturnAsObject(Response);
         }
+
+        public async Task<DbApiValueResponse<byte>> GetSignOutsCount(int entryId, int eventId)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/SignOutsCount/" + entryId.ToString() + "/" + eventId.ToString()); }
+            return new DbApiValueResponse<byte>(Response);
+        }
+
+        public async Task<DbApiValueResponse<byte>> GetNoShowsCount(int entryId, int eventId)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/NoShowsCount/" + entryId.ToString() + "/" + eventId.ToString()); }
+            return new DbApiValueResponse<byte>(Response);
+        }
     }
 }
