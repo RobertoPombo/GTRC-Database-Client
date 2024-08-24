@@ -1,6 +1,7 @@
 ﻿using GTRC_Basics;
 using GTRC_Database_Client.Responses;
 using GTRC_Basics.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GTRC_Database_Client.Requests
 {
@@ -15,6 +16,12 @@ namespace GTRC_Database_Client.Requests
         public async Task<DbApiListResponse<Entry>> UpdateRaceNumbers(int seasonId)
         {
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Update, "/RaceNumbers/" + seasonId.ToString()); }
+            return await ReturnAsList(Response);
+        }
+
+        public async Task<DbApiListResponse<Entry>> UpdatePriorities(int seasonId)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Update, "/Priorities/" + seasonId.ToString()); }
             return await ReturnAsList(Response);
         }
 
@@ -34,6 +41,13 @@ namespace GTRC_Database_Client.Requests
         {
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/CarChangeCount/" + entryId.ToString() + "/" + eventId.ToString()); }
             return new DbApiValueResponse<byte>(Response);
+        }
+
+        public async Task<DbApiValueResponse<DateTime>> GetDateLatestCarChange(int entryId, DateTime? date = null)
+        {
+            string _date = (date ?? DateTime.UtcNow).ToString("MM/dd/yyyy HH:mm:ss");
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/DateLatestCarChange/" + entryId.ToString(), _date, nameof(date)); }
+            return new DbApiValueResponse<DateTime>(Response);
         }
 
         public async Task<DbApiListResponse<Entry>> GetViolationsMinDriversPerEntryEvent(int seasonId)

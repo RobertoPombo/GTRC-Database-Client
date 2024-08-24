@@ -173,7 +173,7 @@ namespace GTRC_Database_Client
         [JsonIgnore] public DbApiRequestEntryDatetime EntryDatetime { get; set; } = new();
         [JsonIgnore] public DbApiRequestEvent Event { get; set; } = new();
         [JsonIgnore] public DbApiRequestEventCarclass EventCarclass { get; set; } = new();
-        [JsonIgnore] public DbApiRequest<EventCar> EventCar { get; set; } = new();
+        [JsonIgnore] public DbApiRequestEventCar EventCar { get; set; } = new();
         [JsonIgnore] public DbApiRequestEntryEvent EntryEvent { get; set; } = new();
         [JsonIgnore] public DbApiRequest<EntryUserEvent> EntryUserEvent { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Pointssystem> Pointssystem { get; set; } = new();
