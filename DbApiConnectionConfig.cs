@@ -175,7 +175,7 @@ namespace GTRC_Database_Client
         [JsonIgnore] public DbApiRequestEventCarclass EventCarclass { get; set; } = new();
         [JsonIgnore] public DbApiRequestEventCar EventCar { get; set; } = new();
         [JsonIgnore] public DbApiRequestEntryEvent EntryEvent { get; set; } = new();
-        [JsonIgnore] public DbApiRequest<EntryUserEvent> EntryUserEvent { get; set; } = new();
+        [JsonIgnore] public DbApiRequestEntryUserEvent EntryUserEvent { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Pointssystem> Pointssystem { get; set; } = new();
         [JsonIgnore] public DbApiRequest<PointssystemPosition> PointssystemPosition { get; set; } = new();
         [JsonIgnore] public DbApiRequest<StintAnalysisMethod> StintAnalysisMethod { get; set; } = new();
