@@ -1,7 +1,6 @@
 ﻿using GTRC_Basics;
 using GTRC_Database_Client.Responses;
 using GTRC_Basics.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GTRC_Database_Client.Requests
 {
