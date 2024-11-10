@@ -178,9 +178,11 @@ namespace GTRC_Database_Client
         [JsonIgnore] public DbApiRequestEntryUserEvent EntryUserEvent { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Pointssystem> Pointssystem { get; set; } = new();
         [JsonIgnore] public DbApiRequest<PointssystemPosition> PointssystemPosition { get; set; } = new();
-        [JsonIgnore] public DbApiRequest<StintAnalysisMethod> StintAnalysisMethod { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Stintanalysismethod> Stintanalysismethod { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Server> Server { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Session> Session { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Performancerequirement> Performancerequirement { get; set; } = new();
+        [JsonIgnore] public DbApiRequest<Prequalifying> Prequalifying { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Resultsfile> Resultsfile { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Lap> Lap { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Leaderboardline> Leaderboardline { get; set; } = new();
@@ -216,9 +218,11 @@ namespace GTRC_Database_Client
             EntryUserEvent = new(this);
             Pointssystem = new(this);
             PointssystemPosition = new(this);
-            StintAnalysisMethod = new(this);
+            Stintanalysismethod = new(this);
             Server = new(this);
             Session = new(this);
+            Performancerequirement = new(this);
+            Prequalifying = new(this);
             Resultsfile = new(this);
             Lap = new(this);
             Leaderboardline = new(this);

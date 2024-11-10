@@ -54,5 +54,11 @@ namespace GTRC_Database_Client.Requests
             if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/SlotsTaken/" + id.ToString() + "/" + carclassId.ToString()); }
             return new DbApiValueResponse<byte>(Response);
         }
+
+        public async Task<DbApiValueResponse<bool>> GetHasSessionScorePoints(int id)
+        {
+            if (connection is not null) { Response = await connection.SendRequest(Model, HttpRequestType.Get, "/HasSessionScorePoints/" + id.ToString()); }
+            return new DbApiValueResponse<bool>(Response);
+        }
     }
 }
