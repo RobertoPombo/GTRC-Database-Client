@@ -180,7 +180,7 @@ namespace GTRC_Database_Client
         [JsonIgnore] public DbApiRequest<PointssystemPosition> PointssystemPosition { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Stintanalysismethod> Stintanalysismethod { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Server> Server { get; set; } = new();
-        [JsonIgnore] public DbApiRequest<Session> Session { get; set; } = new();
+        [JsonIgnore] public DbApiRequestSession Session { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Performancerequirement> Performancerequirement { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Prequalifying> Prequalifying { get; set; } = new();
         [JsonIgnore] public DbApiRequest<Resultsfile> Resultsfile { get; set; } = new();
